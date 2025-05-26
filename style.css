@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none; /* 防止文本选择 */
+    -webkit-touch-callout: none; /* 防止iOS长按弹出菜单 */
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    touch-action: manipulation; /* 优化移动端触摸操作 */
+}
+
+#gameContainer {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+#levelInfo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    z-index: 10;
+}
+
+#instructions {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    z-index: 10;
+    transition: opacity 0.5s;
+}
+
+.feedback-element {
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    background-color: #ffeb3b;
+    color: #e91e63;
+    font-weight: bold;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 5;
+    animation: bounce 0.5s infinite alternate;
+    cursor: pointer;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0) scale(1);
+    }
+    to {
+        transform: translateY(-10px) scale(1.05);
+    }
+}
+
+.feedback-element.clicked {
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+/* 模态弹窗样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    transform: scale(0.8);
+    animation: modalAppear 0.3s forwards;
+}
+
+@keyframes modalAppear {
+    to {
+        transform: scale(1);
+    }
+}
+
+.modal h2 {
+    margin-bottom: 15px;
+    color: #e91e63;
+}
+
+.modal p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#nextLevelBtn {
+    padding: 10px 25px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#nextLevelBtn:hover {
+    background-color: #43a047;
+} 
