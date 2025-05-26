@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isMobile) {
         gameContainer.addEventListener('touchstart', handlePress);
         gameContainer.addEventListener('touchend', handleRelease);
+        // 在空白区域添加事件防止拖动和滚动
+        gameContainer.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
     } else {
         gameContainer.addEventListener('mousedown', handlePress);
         gameContainer.addEventListener('mouseup', handleRelease);
@@ -54,6 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // 获取点击坐标
         const pressPosition = getPressPosition(event);
         
+        // 移除所有可能残留的反馈元素
+        removeAllFeedbackElements();
+        
+        // 重置计数器
+        clickedElementsCount = 0;
+        feedbackElements = [];
+        
         // 生成当前关卡数量的反馈元素
         for (let i = 0; i < currentLevel; i++) {
             createFeedbackElement(pressPosition);
@@ -67,8 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isPressed) return;
         isPressed = false;
         
-        // 移除所有未点击的反馈元素
-        removeUnclickedElements();
+        // 移除所有反馈元素（无论是否已点击）
+        removeAllFeedbackElements();
         
         // 重置计数器
         clickedElementsCount = 0;
@@ -101,7 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function createFeedbackElement(pressPosition) {
         const element = document.createElement('div');
         element.className = 'feedback-element';
-        element.innerText = '打不到我呀！';
+        
+        // 随机选择一个有趣的提示文本
+        const textOptions = ['打不到我呀！', '点我呀！', '快抓住我！', '别松手哦！', '加油！'];
+        const randomText = textOptions[Math.floor(Math.random() * textOptions.length)];
+        element.innerText = randomText;
         
         // 尝试生成位置，最多重试10次
         let validPosition = false;
@@ -173,8 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
         }
         
-        // 如果已经被点击，则忽略
-        if (element.classList.contains('clicked')) {
+        // 如果没有保持初始点击或元素已被点击，则忽略
+        if (!isPressed || element.classList.contains('clicked')) {
             return;
         }
         
@@ -184,7 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // 动画结束后移除元素
         setTimeout(() => {
-            element.remove();
+            if (isPressed) { // 确保在按下状态时才移除元素
+                element.remove();
+            }
         }, 300);
         
         // 检查是否所有元素都被点击
@@ -201,6 +216,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!element.classList.contains('clicked')) {
                 element.remove();
             }
+        });
+    }
+    
+    /**
+     * 移除所有反馈元素
+     */
+    function removeAllFeedbackElements() {
+        feedbackElements.forEach(element => {
+            element.remove();
         });
     }
     

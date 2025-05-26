@@ -59,14 +59,25 @@ body {
     z-index: 5;
     animation: bounce 0.5s infinite alternate;
     cursor: pointer;
+    transform-origin: center;
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+.feedback-element:hover {
+    transform: scale(1.1);
+}
+
+.feedback-element:active {
+    transform: scale(0.95);
+    background-color: #ffd600;
 }
 
 @keyframes bounce {
     from {
-        transform: translateY(0) scale(1);
+        transform: translateY(0) scale(1) rotate(-2deg);
     }
     to {
-        transform: translateY(-10px) scale(1.05);
+        transform: translateY(-10px) scale(1.05) rotate(2deg);
     }
 }
 
